@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TikTacTo</title>
+    <style>
+
+
+
+/* 
+*{
+    padding:0;
+    margin: 0;
+    font-family: 'Itim',cursive;
+}
+ 
+.background{
+    background-color: #121818;
+    height: 100vh;
+    padding-top: 1px;
+}
+.title{
+    color: white;
+    text-align: center;
+    font-size: 40px;
+    margin-top: 10%;
+}
+
+.display{
+
+    color: white;
+    font-size: 25px;
+    text-align: center;
+    margin-top: 1em;
+    margin-bottom: 1em;
+
+    }
+
+    .container{
+        margin:0 auto ;
+        display: grid;
+        grid-template-columns:33% 33% 33% ;
+        grid-template-rows:33% 33% 33%  ;
+    }
+    .title{
+        border: 1px solid white;
+        min-height: 100px;
+        min-width: 100px;
+        display: flex;
+        justify-content: ;
+    } */
+
+
+
+
+
+
+
+    *{
+    padding:0;
+    margin: 0;
+    font-family: 'Itim',cursive;
+}
+
+
+
+
+        .container {
+            display: flex;
+            background-color: black;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100%;
+        }
+
+        .boxes {
+            display: grid;
+            background-color: rgb(63, 157, 159);
+            width: 50%;
+            height: 50%;
+            row-gap: 6px;
+            column-gap: 6px;
+
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-rows: 1fr 1fr 1fr;
+
+        }
+
+        h1 {
+            margin-right: 4px;
+        }
+
+        h1,
+        h2,
+        .winner {
+            text-align: center;
+            color: white;
+        }
+
+        .showtext {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .box {
+            background-color: white;
+            font-size: 70px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        button {
+            font-size: 20px;
+            width: 75px;
+            padding: 10pxpx;
+            border-radius: 10px;
+            background-color: tomato;
+        }
+
+        #titleHeading {
+
+            color: rgb(109, 238, 54);
+            text-align: left;
+            width: 229px;
+            margin: 20px;
+
+
+
+ 
+}
+
+
+@media(max-width:920px){
+
+#titleHeading{
+    align-self: baseline;
+    text-align: left;
+    margin: 20px 0;
+}   
+
+
+
+}
+
+@media (max-width:716px){
+
+    /* .boxes{
+        width: 55%;
+        height: 56%;
+
+    } */
+
+    .boxes {
+    width: 209%;
+    height: 56%;
+}
+
+#titleHeading{
+    width: 120%;
+}
+}
+
+
+
+
+
+
+
+        
+    </style>
+</head>
+
+
+<body>
+    <div class="container">
+
+        <h1 id="titleHeading">Click on the white box to start the game</h1>
+        <div class="showtext ">
+
+            <h1>Tik Tac toe</h1>
+
+
+            <h2 id="playerNum"></h2>
+            <Button id="Reset" onclick="reset()">Reset</Button>
+        </div>
+        <div class="boxes">
+            <div class="box"><span class="textInner"></span></div>
+            <div class="box"><span class="textInner"></span></div>
+            <div class="box"><span class="textInner"></span></div>
+            <div class="box"><span class="textInner"></span></div>
+            <div class="box"><span class="textInner"></span></div>
+            <div class="box"><span class="textInner"></span></div>
+            <div class="box"><span class="textInner"></span></div>
+            <div class="box"><span class="textInner"></span></div>
+            <div class="box"><span class="textInner"></span></div>
+        </div>
+
+    </div>
+
+
+
+
+    <script>
+
+        //Show the Guid
+
+
+        let ShowGuid = document.getElementById('titleHeading');
+
+        function hideGuid() {
+            ShowGuid.style.display = 'none'
+        }
+
+
+
+
+        // intialization
+
+        let players = document.getElementById('playerNum')
+
+        let turn = 'X';
+
+        let gameover = false;
+
+
+        //Function to check Turn
+
+        let changeTurn = function () {
+            return turn === 'X' ? 'O' : 'X'
+        }
+
+
+
+
+
+        //Win logic
+
+        const checkWin = () => {
+            let textInner = document.getElementsByClassName('textInner')
+            let wins = [
+                [0, 1, 2],
+                [3, 4, 5],
+                [6, 7, 8],
+                [0, 4, 8],
+                [2, 4, 6],
+                [0, 3, 6],
+                [1, 4, 7],
+                [2, 5, 8]
+            ]
+
+            wins.forEach(e => {
+
+                if ((textInner[e[0]].innerText === textInner[e[1]].innerText) && (textInner[e[2]].innerText === textInner[e[1]].innerText) && (textInner[e[0]].innerText !== "")) {
+                    document.getElementById('playerNum').innerText = textInner[e[0]].innerText + " Won" + " (Click to reset)"
+                    gameover = true;
+                    autoRun()
+                }
+            })
+
+        }
+
+
+
+
+        //Game logic 
+
+        let boxes = document.getElementsByClassName('box')
+        Array.from(boxes).forEach(element => {
+            let textInner = element.querySelector('.textInner')
+            element.addEventListener('click', () => {
+                console.log('click')
+                if (textInner.innerText === "") {
+                    textInner.innerText = turn;
+                    turn = changeTurn()
+                    checkWin()
+                    hideGuid()
+                    // draw()
+                    if (!gameover) {
+                        document.getElementById('playerNum').innerText = 'Turn for ' + turn;
+                    }
+                }
+            })
+        });
+
+
+
+
+
+
+
+
+
+        //resets the game
+
+        function reset() {
+            window.location.reload()
+
+        }
+
+
+        // Run after winning
+
+        function autoRun() {
+            setInterval(function () {
+                window.location.reload()
+            }, 3000)
+        }
+
+
+
+
+               //  Draw game logic
+
+
+            // function draw() {
+
+
+            //     let textInner = document.getElementsByClassName('textInner')
+
+
+            //     let wins = [
+            //         [0, 1, 2],
+            //         [3, 4, 5],
+            //         [6, 7, 8],
+            //         [0, 4, 8],
+            //         [2, 4, 6],
+            //         [0, 3, 6],
+            //         [1, 4, 7],
+            //         [2, 5, 8]
+            //     ]
+
+
+            //     wins.forEach(e => {
+            //         if ((textInner[e[e]].innerText !== wins)) {
+            //             document.getElementById('playerNum').innerText = "Game draw"
+            //         }
+            //     })
+            // }
+
+
+    </script>
